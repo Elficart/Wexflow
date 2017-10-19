@@ -27,7 +27,21 @@ namespace Wexflow.Tasks.FilesLoader
             {
                 foreach (string folder in Folders)
                 {
-                    foreach (string file in Directory.GetFiles(folder))
+                 
+                    string myfolder = folder;
+                    string pattern = "";   
+
+                    if (!Directory.Exists(myfolder))
+                    {                    
+                        // If is not a folder assuming a pattern is needed
+						pattern = myfolder.Substring(myfolder.LastIndexOf('\\') + 1);
+						if (pattern != "")
+						{
+							myfolder = myfolder.Replace(pattern, "");
+						}
+                    }
+                    
+                    foreach (string file in Directory.GetFiles(folder, pattern))
                     {
                         var fi = new FileInf(file, Id);
                         Files.Add(fi);
